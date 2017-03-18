@@ -4,14 +4,12 @@
 
 #include <stdio.h>
 
-#define GAME_ROWS  20
-#define GAME_COLS 20
+int GAME_COLS,GAME_ROWS;
 
 typedef unsigned char cell_state;
-typedef cell_state game_board[GAME_ROWS][GAME_COLS];
 
-game_board current_state;
-game_board buffer_state;
+cell_state **current_state;
+cell_state **buffer_state;
 
 cell_state next_state(int row, int col); 
 cell_state get_state(int row, int col);

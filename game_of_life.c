@@ -32,10 +32,21 @@ void update_state(){
             buffer_state[row][col] = next_state(row,col);
         }
     }
-    memcpy(current_state,buffer_state,(sizeof(cell_state))*GAME_ROWS*GAME_COLS);
+
+    for(int row = 0; row < GAME_ROWS; row++){
+        memcpy(current_state[row],buffer_state[row],(sizeof(cell_state))*GAME_COLS);
+    }
 }
 
 void load_state(FILE* f){
+    fscanf(f,"%d %d",&GAME_ROWS,&GAME_COLS);
+    current_state = malloc((sizeof(cell_state*))*GAME_ROWS);
+    buffer_state = malloc((sizeof(cell_state*))*GAME_ROWS);
+    for(int row = 0; row < GAME_ROWS; row++){
+        current_state[row] = malloc((sizeof(cell_state))*GAME_COLS);
+        buffer_state[row] = malloc((sizeof(cell_state))*GAME_COLS);
+    }
+
     for(int row = 0; row < GAME_ROWS; row++){
         int col = 0;
         while(col < GAME_COLS){
