@@ -14,9 +14,9 @@ cell_state next_state(int row, int col){
 }
 
 cell_state get_state(int row, int col){
-    if(row < 0 || row >= GAME_ROWS || col < 0 || col >= GAME_ROWS){
-        return 0;
-    }
+    row = row < 0 ? GAME_ROWS + row : (row >= GAME_ROWS ? row - GAME_ROWS : row);
+    col = col < 0 ? GAME_COLS + col : (col >= GAME_COLS ? col - GAME_COLS : col);
+
     return current_state[row][col];
 }
 
