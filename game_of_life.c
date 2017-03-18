@@ -51,7 +51,7 @@ void load_state(FILE* f){
 void print_state(){
     for(int row = 0; row < GAME_ROWS; row++){
         for(int col = 0; col < GAME_COLS; col++){
-            printf("%d",current_state[row][col]);
+            printf("%c",current_state[row][col]?'X':' ');
         }
         printf("\n");
     }
