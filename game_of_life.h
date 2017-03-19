@@ -4,10 +4,14 @@
 
 #include <stdio.h>
 
+/* global variables that hold the dimensions of the 
+ * game*/
 int GAME_COLS,GAME_ROWS;
 
 typedef unsigned char cell_state;
 
+/* global variables that hold the state of the game
+ * buffer_state is used to hold intermediate states*/
 cell_state **current_state;
 cell_state **buffer_state;
 
