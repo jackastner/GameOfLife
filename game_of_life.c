@@ -97,7 +97,7 @@ void free_state(){
     free(buffer_state);
 }
 
-int main(int argc, char** argv){
+int main_aux(int argc, char** argv){
     /*load state from file given as first arg*/
     FILE * f = fopen(argv[1],"r");
     load_state(f);
