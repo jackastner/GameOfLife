@@ -68,6 +68,16 @@ void print_state(){
     }
 }
 
+void free_state(){
+    for(int row = 0; row < GAME_ROWS; row++){
+        free(current_state[row]);
+        free(buffer_state[row]);
+    }
+
+    free(current_state);
+    free(buffer_state);
+}
+
 int main(int argc, char** argv){
     FILE * f = fopen(argv[1],"r");
     load_state(f);
@@ -82,4 +92,6 @@ int main(int argc, char** argv){
         print_state();
         printf("\n");
     }
+
+    free_state();
 }

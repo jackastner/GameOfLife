@@ -17,3 +17,4 @@ unsigned char count_neighbours(int row, int col);
 void update_state();
 void load_state(FILE* f);
 void print_state();
+void free_state();
