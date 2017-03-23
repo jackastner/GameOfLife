@@ -1,6 +1,5 @@
 #ifndef GAME_OF_LIFE_H
 #define GAME_OF_LIFE_H
-#endif
 
 #include <stdio.h>
 
@@ -22,3 +21,4 @@ void update_state();
 void load_state(FILE* f);
 void print_state();
 void free_state();
+#endif
