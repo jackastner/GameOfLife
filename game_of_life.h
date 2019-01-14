@@ -2,7 +2,7 @@
 #define GAME_OF_LIFE_H
 #endif
 
-#include <stdio.h>
+#include <istream>
 
 typedef unsigned char cell_state;
 
@@ -20,7 +20,7 @@ class GameOfLife {
     public:
         void update_state();
         cell_state get_state(int row, int col);
-        void load_state(FILE* f);
+        void load_state(std::istream* in);
         void print_state();
         void free_state();
 };

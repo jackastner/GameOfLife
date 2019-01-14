@@ -1,7 +1,8 @@
 #include "game_of_life.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstring>
+#include <string>
+#include <fstream>
+#include <iostream>
 
 /*calculate the state that a cell will have after a transition*/
 cell_state GameOfLife::next_state(int row, int col){
@@ -39,31 +40,33 @@ void GameOfLife::update_state(){
     }
 
     for(int row = 0; row < game_rows; row++){
-        memcpy(current_state[row],buffer_state[row],(sizeof(cell_state))*game_cols);
+        std::memcpy(current_state[row],buffer_state[row],(sizeof(cell_state))*game_cols);
     }
 }
 
 /* Load an initial state from a file where the first line contains the number
  * of row followed by collumns and the reset of the files consists of 1's 
  * and 0's each showing the state of a cell*/
-void GameOfLife::load_state(FILE* f){
+void GameOfLife::load_state(std::istream* state_file){
     /*read the dimensions of the board*/
-    fscanf(f,"%d %d",&game_rows,&game_cols);
+    *state_file >> game_rows >> game_cols;
 
     /*allocate memory for the game state and buffer state*/
-    current_state = (cell_state**) malloc((sizeof(cell_state*))*game_rows);
-    buffer_state = (cell_state**) malloc((sizeof(cell_state*))*game_rows);
+    current_state = new cell_state*[game_rows];
+    buffer_state = new cell_state*[game_rows];
+
     /*each row must be initialized individualy*/
     for(int row = 0; row < game_rows; row++){
-        current_state[row] = (cell_state*) malloc((sizeof(cell_state))*game_cols);
-        buffer_state[row] = (cell_state*) malloc((sizeof(cell_state))*game_cols);
+        current_state[row] = new cell_state[game_cols];
+        buffer_state[row] = new cell_state[game_cols];
     }
 
     /*read the remaining lines into the previously alocated data structures.*/
     for(int row = 0; row < game_rows; row++){
         int col = 0;
         while(col < game_cols){
-            int next_c = getc(f);
+            char next_c;
+            state_file->get(next_c);
             if(next_c == '0' || next_c == '1'){
                 current_state[row][col] = next_c-'0';
                 col++;
@@ -76,9 +79,9 @@ void GameOfLife::load_state(FILE* f){
 void GameOfLife::print_state(){
     for(int row = 0; row < game_rows; row++){
         for(int col = 0; col < game_cols; col++){
-            printf("%c",current_state[row][col]?'X':' ');
+            std::cout << (current_state[row][col]?'X':' ');
         }
-        printf("\n");
+        std::cout << std::endl;
     }
 }
 
@@ -88,34 +91,34 @@ void GameOfLife::print_state(){
 void GameOfLife::free_state(){
     /*all rows need to be freed seperatly*/
     for(int row = 0; row < game_rows; row++){
-        free(current_state[row]);
-        free(buffer_state[row]);
+        delete[] current_state[row];
+        delete[] buffer_state[row];
     }
 
     /*now the state can be freed*/
-    free(current_state);
-    free(buffer_state);
+    delete[] current_state;
+    delete[] buffer_state;
 }
 
 int main(int argc, char** argv){
     GameOfLife game;
 
     /*load state from file given as first arg*/
-    FILE * f = fopen(argv[1],"r");
-    game.load_state(f);
-    fclose(f);
+    std::ifstream state_file(argv[1]);
+    game.load_state(&state_file);
+    state_file.close();
 
     /*read number of itterations to run from second arg*/
-    int itters = atoi(argv[2]);
+    int itters = std::atoi(argv[2]);
 
     /* run specifiec number of iterations, printing the state
      * between steps.*/
     game.print_state();
-    printf("\n");
+    std::cout << std::endl;
     for(int i = 0; i < itters; i++){
         game.update_state();
         game.print_state();
-        printf("\n");
+        std::cout << std::endl;
     }
 
     game.free_state();
