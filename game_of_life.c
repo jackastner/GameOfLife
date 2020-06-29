@@ -14,7 +14,7 @@ cell_state next_state(int row, int col){
     return current_state[row][col];
 }
 
-/* retreive the state of a cell at the specifed index. Cells out side the
+/* retrieve the state of a cell at the specified index. Cells out side the
  * bounds of the underlying array are treated as if they wrap at the edges*/
 cell_state get_state(int row, int col){
     row = row < 0 ? GAME_ROWS + row : (row >= GAME_ROWS ? row - GAME_ROWS : row);
@@ -44,7 +44,7 @@ void update_state(){
 }
 
 /* Load an initial state from a file where the first line contains the number
- * of row followed by collumns and the reset of the files consists of 1's 
+ * of row followed by columns and the reset of the files consists of 1's 
  * and 0's each showing the state of a cell*/
 void load_state(FILE* f){
     /*read the dimensions of the board*/
@@ -53,13 +53,13 @@ void load_state(FILE* f){
     /*allocate memory for the game state and buffer state*/
     current_state = malloc((sizeof(cell_state*))*GAME_ROWS);
     buffer_state = malloc((sizeof(cell_state*))*GAME_ROWS);
-    /*each row must be initialized individualy*/
+    /*each row must be initialized individually*/
     for(int row = 0; row < GAME_ROWS; row++){
         current_state[row] = malloc((sizeof(cell_state))*GAME_COLS);
         buffer_state[row] = malloc((sizeof(cell_state))*GAME_COLS);
     }
 
-    /*read the remaining lines into the previously alocated data structures.*/
+    /*read the remaining lines into the previously allocated data structures.*/
     for(int row = 0; row < GAME_ROWS; row++){
         int col = 0;
         while(col < GAME_COLS){
@@ -72,7 +72,7 @@ void load_state(FILE* f){
     }
 }
 
-/*print an ASCII repsentation of the current game state to stdout*/
+/*print an ASCII representation of the current game state to stdout*/
 void print_state(){
     for(int row = 0; row < GAME_ROWS; row++){
         for(int col = 0; col < GAME_COLS; col++){
@@ -82,11 +82,11 @@ void print_state(){
     }
 }
 
-/* Free all memory alocated by calls to load_state. This function
+/* Free all memory allocated by calls to load_state. This function
  * should be called between all calls to load_state to eliminate
  * memory leaks.*/
 void free_state(){
-    /*all rows need to be freed seperatly*/
+    /*all rows need to be freed separately*/
     for(int row = 0; row < GAME_ROWS; row++){
         free(current_state[row]);
         free(buffer_state[row]);
@@ -103,10 +103,10 @@ int main(int argc, char** argv){
     load_state(f);
     fclose(f);
 
-    /*read number of itterations to run from second arg*/
+    /*read number of iterations to run from second arg*/
     int itters = atoi(argv[2]);
 
-    /* run specifiec number of iterations, printing the state
+    /* run specific number of iterations, printing the state
      * between steps.*/
     print_state();
     printf("\n");
